@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/Text_Editor.dir/src/attributes.cpp.o CMakeFiles/Text_Editor.dir/src/buffer.cpp.o CMakeFiles/Text_Editor.dir/src/editor.cpp.o CMakeFiles/Text_Editor.dir/src/errors.cpp.o CMakeFiles/Text_Editor.dir/src/main.cpp.o CMakeFiles/Text_Editor.dir/src/modes.cpp.o CMakeFiles/Text_Editor.dir/src/run.cpp.o -o Text_Editor 
