@@ -1,3 +1,3 @@
 #pragma once
 
-void run();
+void run(int argc, char **argv);

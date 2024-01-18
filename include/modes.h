@@ -2,4 +2,3 @@
 
 
 void enableRawMode();
-void initEditor();
