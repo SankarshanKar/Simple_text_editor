@@ -206,6 +206,12 @@ CMakeFiles/Text_Editor.dir/src/editor.cpp.o: ../src/editor.cpp \
   /usr/include/c++/11/cstring \
   /usr/include/string.h \
   /usr/include/strings.h \
+  /usr/include/c++/11/ctime \
+  /usr/include/time.h \
+  /usr/include/x86_64-linux-gnu/bits/time.h \
+  /usr/include/x86_64-linux-gnu/bits/timex.h \
+  /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
+  /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
   /usr/include/unistd.h \
   /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
   /usr/include/x86_64-linux-gnu/bits/environments.h \
@@ -416,6 +422,12 @@ CMakeFiles/Text_Editor.dir/src/run.cpp.o: ../src/run.cpp \
 
 ../include/buffer.h:
 
+/usr/include/x86_64-linux-gnu/bits/timex.h:
+
+/usr/include/time.h:
+
+/usr/include/c++/11/ctime:
+
 /usr/include/x86_64-linux-gnu/bits/types/error_t.h:
 
 /usr/include/linux/errno.h:
@@ -522,6 +534,8 @@ CMakeFiles/Text_Editor.dir/src/run.cpp.o: ../src/run.cpp \
 
 ../include/errors.h:
 
+/usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h:
+
 /usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h:
 
 /usr/include/x86_64-linux-gnu/bits/getopt_core.h:
@@ -547,6 +561,8 @@ CMakeFiles/Text_Editor.dir/src/run.cpp.o: ../src/run.cpp \
 /usr/include/x86_64-linux-gnu/bits/unistd_ext.h:
 
 /usr/include/features.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_tm.h:
 
 /usr/include/c++/11/cerrno:
 
@@ -605,6 +621,8 @@ CMakeFiles/Text_Editor.dir/src/run.cpp.o: ../src/run.cpp \
 /usr/include/x86_64-linux-gnu/bits/floatn.h:
 
 /usr/include/x86_64-linux-gnu/bits/floatn-common.h:
+
+/usr/include/x86_64-linux-gnu/bits/time.h:
 
 /usr/include/termios.h:
 

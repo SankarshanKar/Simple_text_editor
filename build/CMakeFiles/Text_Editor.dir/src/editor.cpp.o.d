@@ -64,8 +64,12 @@ CMakeFiles/Text_Editor.dir/src/editor.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/struct_rwlock.h /usr/include/alloca.h \
  /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
  /usr/include/c++/11/bits/std_abs.h /usr/include/c++/11/cstring \
- /usr/include/string.h /usr/include/strings.h /usr/include/unistd.h \
- /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
+ /usr/include/string.h /usr/include/strings.h /usr/include/c++/11/ctime \
+ /usr/include/time.h /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/bits/timex.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
+ /usr/include/unistd.h /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
  /usr/include/x86_64-linux-gnu/bits/environments.h \
  /usr/include/x86_64-linux-gnu/bits/confname.h \
  /usr/include/x86_64-linux-gnu/bits/getopt_posix.h \
