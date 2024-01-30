@@ -1,5 +1,6 @@
 #include <asm-generic/errno-base.h>
 #include <bits/types/FILE.h>
+#include <cctype>
 #include <cerrno>
 #include <cstddef>
 #include <cstdio>
@@ -223,6 +224,42 @@ void editorSetStatusMessage(const char *fmt, ...) {
     E.statusmsg_time = time(NULL);
 }
 
+char *editorPrompt(char *prompt) {
+    size_t bufsize = 128;
+    char *buf = (char*)malloc(bufsize);
+
+    size_t buflen = 0;
+    buf[0] = '\0';
+
+    while (1) {
+        editorSetStatusMessage(prompt, buf);
+        editorRefreshScreen();
+
+        int c = editorReadKey();
+        if (c == DEL_KEY || c == CTRL_KEY('h') || c == BACKSPACE) {
+            if (buflen != 0) {
+                buf[--buflen] = '\0';
+            }
+        } else if (c == '\x1b') {
+            editorSetStatusMessage("");
+            free(buf);
+            return NULL;
+        } else if (c == '\r') {
+            if (buflen != 0) {
+                editorSetStatusMessage("");
+                return buf;
+            }
+        } else if (!std::iscntrl(c) && c < 128) {
+            if (buflen == bufsize - 1) {
+                bufsize *= 2;
+                buf = (char*)realloc(buf, bufsize);
+            }
+            buf[buflen++] = c;
+            buf[buflen] = '\0';
+        }
+    }
+}
+
 void editorMoveCursor(int key) {
     erow *row = (E.cy >= E.numrows) ? NULL : &E.row[E.cy];
 
@@ -289,10 +326,12 @@ void editorUpdateRow(erow *row) {
     row->rsize = idx;
 }
 
-void editorAppendRow(char *s, size_t len) {
-    E.row = (erow*) realloc(E.row, sizeof(erow) * (E.numrows + 1));
+void editorInsertRow(int at, char *s, size_t len) {
+    if (at < 0 || at > E.numrows) return;
 
-    int at = E.numrows;
+    E.row = (erow*)realloc(E.row, sizeof(erow) * (E.numrows - at));
+    memmove(&E.row[at + 1], &E.row[at], sizeof(erow) * (E.numrows - at));
+
     E.row[at].size = len;
     E.row[at].chars = (char*) malloc(len + 1);
     memcpy(&E.row[at], s, len);
@@ -351,10 +390,25 @@ void editorRowDelChar(erow *row, int at) {
 
 void editorInsertChar(int c) {
     if (E.cy == E.numrows) {
-        editorAppendRow((char*)"", 0);
+        editorInsertRow(E.numrows, (char*)"", 0);
     }
     editorRowInsertChar(&E.row[E.cy], E.cx, c);
     E.cx++;
+}
+
+void editorInsertNewLine() {
+    if (E.cx == 0) {
+        editorInsertRow(E.cy, (char*)"", 0);
+    } else {
+        erow *row = &E.row[E.cy];
+        editorInsertRow(E.cy + 1, &row->chars[E.cx], row->size - E.cx);
+        row = &E.row[E.cy];
+        row->size = E.cx;
+        row->chars[row->size] = '\0';
+        editorUpdateRow(row);
+    }
+    E.cy++;
+    E.cx = 0;
 }
 
 void editorDelChar() {
@@ -394,7 +448,11 @@ char *editorRowsToString(int *buflen) {
 
 void editorSave() {
     if (E.filename == NULL) {
-        return;
+        E.filename = editorPrompt((char*)"Save as: %s (ESC to cancel)");
+        if (E.filename == NULL) {
+            editorSetStatusMessage("Save aborted");
+            return;
+        }
     }
 
     int len;
@@ -417,6 +475,23 @@ void editorSave() {
     editorSetStatusMessage("Save failed: I/O error: %s", strerror(errno));
 }
 
+void editorFind() {
+    char *query = editorPrompt((char*)"Search: %s (ESC to cancel)");
+    if (query == NULL) return;
+
+    for (int i = 0; i < E.numrows; i++) {
+        erow *row = &E.row[i];
+        char *match = strstr(row->render, query);
+        if (match) {
+            E.cy = i;
+            E.cx = match - row->render;
+            E.rowoff = E.numrows;
+            break;
+        }
+    }
+    free(query);
+}
+
 void editorProcessKeyPress() {
     static int quit_times = QUIT_TIMES;
     
@@ -424,6 +499,7 @@ void editorProcessKeyPress() {
 
     switch (c) {
         case '\r':
+            editorInsertNewLine();
             break;
         
         case CTRL_KEY('q'):
@@ -512,7 +588,7 @@ void editorOpen(char *filename) {
         while (linelen > 0 && (line[linelen - 1] == '\n' || line [linelen - 1] == '\r')) {
             linelen--;
         }
-        editorAppendRow(line, linelen);
+        editorInsertRow(E.numrows, line, linelen);
     }
     free(line);
     fclose(fp);
