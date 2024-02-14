@@ -9,7 +9,16 @@ typedef struct erow {
     int rsize;
     char *chars;
     char *render;
+    unsigned char *hl;
 } erow;
+
+struct editorSyntax {
+    char *filetype;
+    char **filematch;
+    char **keywords;
+    char *singleline_comment_start;
+    int flags;
+};
 
 struct editorConfig {
     int cx, cy;
@@ -24,17 +33,8 @@ struct editorConfig {
     char *filename;
     char statusmsg[80];
     time_t statusmsg_time;
+    struct editorSyntax *syntax;
     struct termios orig_termios;
-};
-
-struct editorSyntax {
-    char *filetype;
-    char **filematch;
-    char **keywords;
-    char *singleline_comment_start;
-    char *multiline_comment_start;
-    char *multiline_comment_end;
-    int flags;
 };
 
 struct abuf {
