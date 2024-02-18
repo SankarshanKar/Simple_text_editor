@@ -5,11 +5,13 @@
 #include "../include/modes.h"
 
 typedef struct erow {
+    int idx;
     int size;
     int rsize;
     char *chars;
     char *render;
     unsigned char *hl;
+    int hl_open_comment;
 } erow;
 
 struct editorSyntax {
@@ -17,6 +19,8 @@ struct editorSyntax {
     char **filematch;
     char **keywords;
     char *singleline_comment_start;
+    char *multiline_comment_start;
+    char *multiline_comment_end;
     int flags;
 };
 
